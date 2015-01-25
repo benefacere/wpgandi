@@ -1,0 +1,103 @@
+#!/bin/bash
+
+SITEURL=$(basename $PWD)
+
+EXPECTED_ARGS=7
+E_BADARGS=65
+
+# CREATION DE LA BASE
+MYSQL=`which mysql`
+
+Q1="CREATE DATABASE IF NOT EXISTS $1;"
+Q2="GRANT USAGE ON *.* TO $2@localhost IDENTIFIED BY '$3';"
+Q3="GRANT ALL PRIVILEGES ON $1.* TO $2@localhost;"
+Q4="FLUSH PRIVILEGES;"
+SQL="${Q1}${Q2}${Q3}${Q4}"
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: sh script.sh dbname dbuser dbpass sitetitle adminuser adminmail adminpass"
+  exit $E_BADARGS
+fi
+
+$MYSQL -uroot -p -e "$SQL"
+
+# FICHIER CONF WP-CLI
+echo 'path:htdocs' > wp-cli.yml
+echo 'debug:true' >> wp-cli.yml
+echo 'url:http://'$SITEURL >> wp-cli.yml
+echo 'apache_modules:' >> wp-cli.yml
+echo '	- mod_rewrite' >> wp-cli.yml
+
+# WP-CLI
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+# INSTALLATION
+php wp-cli.phar core download --locale=fr_FR --force
+php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$2 --dbpass=$3 --skip-check --extra-php <<PHP
+define('WP_HOME','http://$SITEURL');
+define('WP_SITEURL','http://$SITEURL');
+PHP
+
+php wp-cli.phar core install --title="Wordpress" --admin_user=$5 --admin_email=$6 --admin_password=$7
+
+# PARAMETRAGE
+php wp-cli.phar rewrite structure "/%postname%/" --hard
+php wp-cli.phar rewrite flush --hard
+php wp-cli.phar option update blog_public 0
+php wp-cli.phar option update timezone_string Europe/Paris
+
+# NETTOYAGE
+php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="page-d-exemple" --field=ID --format=ids)
+php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
+php wp-cli.phar plugin deactivate hello
+php wp-cli.phar plugin uninstall hello
+php wp-cli.phar plugin deactivate akismet
+php wp-cli.phar plugin uninstall akismet
+
+# PLUGINS (RAF : ithemes security + parametrage)
+php wp-cli.phar plugin install wordpress-seo --activate
+php wp-cli.phar plugin install backwpup --activate
+php wp-cli.phar plugin install black-studio-tinymce-widget --activate
+php wp-cli.phar plugin install contact-form-7 --activate
+php wp-cli.phar plugin install really-simple-captcha --activate
+php wp-cli.phar plugin install ewww-image-optimizer --activate
+php wp-cli.phar plugin install wp-optimize --activate
+php wp-cli.phar plugin install zero-spam --activate
+php wp-cli.phar plugin install wp-maintenance-mode --activate
+php wp-cli.phar plugin install w3-total-cache
+php wp-cli.phar theme delete twentythirteen
+php wp-cli.phar theme delete twentyfourteen
+
+# robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
+echo 'User-agent: *' > htdocs/robots.txt
+echo 'Disallow: /wp-login.php' >> htdocs/robots.txt
+echo 'Disallow: /wp-admin' >> htdocs/robots.txt
+echo 'Disallow: /wp-includes' >> htdocs/robots.txt
+echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
+
+htpasswd -b -c .htpasswd $5 $7
+
+echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
+echo 'AuthType Basic' >> htdocs/.htaccess
+echo 'AuthName "Secure Area"' >> htdocs/.htaccess
+echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' >> htdocs/.htaccess
+echo 'require valid-user' >> htdocs/.htaccess
+echo '</FilesMatch>' >> htdocs/.htaccess
+
+echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' > htdocs/wp-admin/.htaccess
+echo 'AuthName "Secure Area"' >> htdocs/wp-admin/.htaccess
+echo 'AuthType Basic' >> htdocs/wp-admin/.htaccess
+echo '<limit GET POST>' >> htdocs/wp-admin/.htaccess
+echo 'require valid-user' >> htdocs/wp-admin/.htaccess
+echo '</limit>' >> htdocs/wp-admin/.htaccess
+
+# BackWPup
+wp option update backwpup_cfg_showadminbar '0' 
+
+# CORRECTION BUG WP-CLI
+php wp-cli.phar option update blogname $4
+
+# NETTOYAGE
+rm wp-cli.yml
+rm wp-cli.phar
