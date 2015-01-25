@@ -3,7 +3,7 @@
 # SE PLACER A LA BASE DU REPERTOIRE VIRTUEL, PAS DANS LE REPERTOIRE HTDOCS
 SITEURL=$(basename $PWD)
 
-EXPECTED_ARGS=7
+EXPECTED_ARGS=6
 E_BADARGS=65
 
 # CREATION DE LA BASE
@@ -17,7 +17,7 @@ SQL="${Q1}${Q2}${Q3}${Q4}"
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: sh script.sh dbname dbuser dbpass sitetitle adminuser adminmail adminpass"
+  echo "Usage: sh script.sh dbname dbuser dbpass adminuser adminmail adminpass"
   exit $E_BADARGS
 fi
 
@@ -40,7 +40,7 @@ define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
 PHP
 
-php wp-cli.phar core install --title="Wordpress" --admin_user=$5 --admin_email=$6 --admin_password=$7
+php wp-cli.phar core install --title="Wordpress" --admin_user=$4 --admin_email=$5 --admin_password=$6
 
 # PARAMETRAGE
 php wp-cli.phar rewrite structure "/%postname%/" --hard
@@ -77,7 +77,7 @@ echo 'Disallow: /wp-admin' >> htdocs/robots.txt
 echo 'Disallow: /wp-includes' >> htdocs/robots.txt
 echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
 
-htpasswd -b -c .htpasswd $5 $7
+htpasswd -b -c .htpasswd $4 $6
 
 echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
 echo 'AuthType Basic' >> htdocs/.htaccess
@@ -95,9 +95,6 @@ echo '</limit>' >> htdocs/wp-admin/.htaccess
 
 # BackWPup
 wp option update backwpup_cfg_showadminbar '0' 
-
-# CORRECTION BUG WP-CLI
-php wp-cli.phar option update blogname $4
 
 # NETTOYAGE
 rm wp-cli.yml
