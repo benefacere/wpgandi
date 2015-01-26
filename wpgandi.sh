@@ -93,9 +93,6 @@ echo '<limit GET POST>' >> htdocs/wp-admin/.htaccess
 echo 'require valid-user' >> htdocs/wp-admin/.htaccess
 echo '</limit>' >> htdocs/wp-admin/.htaccess
 
-# BackWPup
-wp option update backwpup_cfg_showadminbar '0' 
-
 # NETTOYAGE
 rm wp-cli.yml
 rm wp-cli.phar
