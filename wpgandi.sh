@@ -43,8 +43,6 @@ PHP
 php wp-cli.phar core install --title="Wordpress" --admin_user=$4 --admin_email=$5 --admin_password=$6
 
 # PARAMETRAGE
-php wp-cli.phar rewrite structure "/%postname%/" --hard
-php wp-cli.phar rewrite flush --hard
 php wp-cli.phar option update blog_public 0
 php wp-cli.phar option update timezone_string Europe/Paris
 
@@ -69,6 +67,10 @@ php wp-cli.phar plugin install wp-maintenance-mode --activate
 php wp-cli.phar plugin install w3-total-cache
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
+
+# PARAMETRAGE PERMALIENS (avec modif du .htaccess)
+php wp-cli.phar rewrite structure "/%postname%/" --hard
+php wp-cli.phar rewrite flush --hard
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
