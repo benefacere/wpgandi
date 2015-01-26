@@ -42,11 +42,13 @@ PHP
 
 php wp-cli.phar core install --title="Wordpress" --admin_user=$4 --admin_email=$5 --admin_password=$6
 
-# PARAMETRAGE
+# PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
 php wp-cli.phar option update timezone_string Europe/Paris
 
 # NETTOYAGE
+php wp-cli.phar theme delete twentythirteen
+php wp-cli.phar theme delete twentyfourteen
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="page-d-exemple" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
@@ -65,8 +67,6 @@ php wp-cli.phar plugin install wp-optimize --activate
 php wp-cli.phar plugin install zero-spam --activate
 php wp-cli.phar plugin install wp-maintenance-mode --activate
 php wp-cli.phar plugin install w3-total-cache
-php wp-cli.phar theme delete twentythirteen
-php wp-cli.phar theme delete twentyfourteen
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
