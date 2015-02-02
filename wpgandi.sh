@@ -14,7 +14,7 @@ E_BADARGS=65
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: sh wpgandi.sh dbname dbuser dbpass adminuser adminmail adminpass"
+  echo "Usage: bash wpgandi.sh dbname dbuser dbpass adminuser adminmail adminpass"
   exit $E_BADARGS
 fi
 
