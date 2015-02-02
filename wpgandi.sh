@@ -2,26 +2,47 @@
 
 # SE PLACER A LA BASE DU REPERTOIRE VIRTUEL, PAS DANS LE REPERTOIRE HTDOCS
 SITEURL=$(basename $PWD)
+E_USAGE=64
+if [ "$SITEURL" == "htdocs" ]
+then
+  echo "Usage: pas dans htdocs mais dans le répertoire en dessous, celui du nom de domaine"
+  exit $E_USAGE
+fi
 
 EXPECTED_ARGS=6
 E_BADARGS=65
 
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: sh wpgandi.sh dbname dbuser dbpass adminuser adminmail adminpass"
+  exit $E_BADARGS
+fi
+
+# Fonction de sortie de script :
+die() {
+        echo $@ >&2 ;
+        exit 1 ;
+}
+
 # CREATION DE LA BASE
 MYSQL=`which mysql`
 
+D0="GRANT USAGE ON *.* TO $2@localhost;"
+D1="DROP USER $2@localhost;" 
+D2="DROP DATABASE IF EXISTS $1;" 
 Q1="CREATE DATABASE IF NOT EXISTS $1;"
 Q2="GRANT USAGE ON *.* TO $2@localhost IDENTIFIED BY '$3';"
 Q3="GRANT ALL PRIVILEGES ON $1.* TO $2@localhost;"
 Q4="FLUSH PRIVILEGES;"
-SQL="${Q1}${Q2}${Q3}${Q4}"
-
-if [ $# -ne $EXPECTED_ARGS ]
-then
-  echo "Usage: sh script.sh dbname dbuser dbpass adminuser adminmail adminpass"
-  exit $E_BADARGS
-fi
+SQL="${D0}${D1}${D2}${Q1}${Q2}${Q3}${Q4}"
 
 $MYSQL -uroot -p -e "$SQL"
+[ $? -eq 0 ] || die "Impossible to de créer la base et le user, mot de passe incorrect ?" ;
+
+#NETTOYAGE
+rm -rf htdocs/*
+rm .htpasswd
+rm htdocs/.htaccess
 
 # FICHIER CONF WP-CLI
 echo 'path:htdocs' > wp-cli.yml
