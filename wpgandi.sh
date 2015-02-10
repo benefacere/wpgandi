@@ -89,6 +89,7 @@ php wp-cli.phar plugin deactivate hello
 php wp-cli.phar plugin uninstall hello
 php wp-cli.phar plugin deactivate akismet
 php wp-cli.phar plugin uninstall akismet
+php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=ids)
 
 # NOUVEAU CHLD THEME pour TWENTY FIFTEEN
 php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
@@ -108,6 +109,9 @@ php wp-cli.phar plugin install w3-total-cache
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
 php wp-cli.phar rewrite flush --hard
+
+# FERMETURE DES COMMENTAIRES
+wp option set default_comment_status closed
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
