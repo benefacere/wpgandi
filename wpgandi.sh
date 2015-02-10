@@ -23,7 +23,7 @@ passworddb=`head -c 12 /dev/random | base64`
 passworddb=${passgen:0:12}
 
 # GENERATION DE PASSWORD WP
-passwordwp=`head -c 10 /dev/random | base64`
+passwordwp=`head -c 12 /dev/random | base64`
 passwordwp=${passgen:0:12}
 
 # Fonction de sortie de script :
