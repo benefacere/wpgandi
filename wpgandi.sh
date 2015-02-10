@@ -77,12 +77,12 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 
 # INSTALLATION
 php wp-cli.phar core download --locale=fr_FR --force
-php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass='$passworddb' --skip-check --extra-php <<PHP
+php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass=$passworddb --skip-check --extra-php <<PHP
 define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password='$passwordwp'
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 # PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
@@ -165,7 +165,7 @@ rm wp-cli.phar
 echo "================================================================="
 echo "Installation ok."
 echo ""
-echo "Username DB: $"
+echo "Username DB: $1"
 echo "Password DB: $passworddb"
 echo ""
 echo "Username WP: $2"
