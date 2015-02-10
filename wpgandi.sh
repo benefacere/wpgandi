@@ -111,7 +111,12 @@ php wp-cli.phar rewrite structure "/%postname%/" --hard
 php wp-cli.phar rewrite flush --hard
 
 # FERMETURE DES COMMENTAIRES
-wp option set default_comment_status closed
+php wp-cli.phar option set default_comment_status closed
+
+#CREATION DE 3 PAGES PAR DEFAUT
+php wp-cli.phar post create --post_type=page --post_status=publish --post_title='Home'
+php wp-cli.phar post create --post_type=page --post_status=publish --post_title='About'
+php wp-cli.phar post create --post_type=page --post_status=publish --post_title='Contact'
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
