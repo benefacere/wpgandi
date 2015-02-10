@@ -21,10 +21,12 @@ fi
 # GENERATION DE PASSWORD DB
 passworddb=`head -c 12 /dev/random | base64`
 passworddb=${passgen:0:12}
+echo $passworddb
 
 # GENERATION DE PASSWORD WP
 passwordwp=`head -c 12 /dev/random | base64`
 passwordwp=${passgen:0:12}
+echo $passwordwp
 
 # Fonction de sortie de script :
 die() {
@@ -77,12 +79,12 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 
 # INSTALLATION
 php wp-cli.phar core download --locale=fr_FR --force
-php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass=$passworddb --skip-check --extra-php <<PHP
+php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass='$passworddb' --skip-check --extra-php <<PHP
 define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password='$passwordwp'
 
 # PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
