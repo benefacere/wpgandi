@@ -14,7 +14,7 @@ E_BADARGS=65
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: bash wpgandi.sh dbname  adminuser adminmail"
+  echo "Usage: bash wpgandi.sh dbname wpuser wpmail"
   exit $E_BADARGS
 fi
 
@@ -122,9 +122,9 @@ php wp-cli.phar rewrite flush --hard
 php wp-cli.phar option set default_comment_status closed
 
 #CREATION DE 3 PAGES PAR DEFAUT
-php wp-cli.phar post create --post_type=page --post_title=Accueil --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
-php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
-echo '[contact-form-7 id="5" title="Formulaire de contact 1"]' | php wp-cli.phar post create --post_type=page --post_title=Contact --post_content --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
+php wp-cli.phar post create --post_type=page --post_title='Accueil' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
+php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
+echo '[contact-form-7 id="5" title="Formulaire de contact 1"]' | php wp-cli.phar post create --post_type=page --post_title='Contact' --post_content --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
 php wp-cli.phar option update show_on_front 'page'
 php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
 
