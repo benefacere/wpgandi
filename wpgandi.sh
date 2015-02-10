@@ -77,6 +77,9 @@ php wp-cli.phar plugin uninstall hello
 php wp-cli.phar plugin deactivate akismet
 php wp-cli.phar plugin uninstall akismet
 
+# NOUVEAU CHLD THEME pour TWENTY FIFTEEN
+php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
+
 # PLUGINS (RAF : ithemes security + parametrage)
 php wp-cli.phar plugin install wordpress-seo --activate
 php wp-cli.phar plugin install backwpup --activate
