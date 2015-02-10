@@ -41,8 +41,21 @@ $MYSQL -uroot -p -e "$SQL"
 
 #NETTOYAGE
 rm -rf htdocs/*
-rm .htpasswd
-rm htdocs/.htaccess
+echo "Répertoire htdocs nettoyé"
+if [ -f htdocs/.htaccess ]
+then
+	rm htdocs/.htaccess
+else
+	echo "pas de htaccess a supprimer"
+	echo "htaccess supprimé"
+fi
+if [ -f .htpasswd ]
+then
+	rm .htpasswd
+	echo "htpasswd supprimé"
+else
+	echo "pas de htpasswd a supprimer"
+fi
 
 # FICHIER CONF WP-CLI
 echo 'path:htdocs' > wp-cli.yml
