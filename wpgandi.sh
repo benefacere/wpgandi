@@ -19,10 +19,12 @@ then
 fi
 
 # GENERATION DE PASSWORD DB
-passworddb=$(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 12)
+passworddb=`head -c 12 /dev/random | base64`
+passworddb=${passgen:0:12}
 
 # GENERATION DE PASSWORD WP
-passwordwp=$(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 12)
+passwordwp=`head -c 10 /dev/random | base64`
+passwordwp=${passgen:0:12}
 
 # Fonction de sortie de script :
 die() {
