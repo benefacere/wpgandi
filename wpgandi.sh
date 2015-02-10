@@ -19,14 +19,12 @@ then
 fi
 
 # GENERATION DE PASSWORD DB
-passworddb='head -c 12 /dev/random | base64'
+passworddb=`head -c 12 /dev/random | base64`
 passworddb=${passworddb:0:12}
-echo $passworddb
 
 # GENERATION DE PASSWORD WP
-passwordwp='head -c 12 /dev/random | base64'
+passwordwp=`head -c 12 /dev/random | base64`
 passwordwp=${passwordwp:0:12}
-echo $passwordwp
 
 # Fonction de sortie de script :
 die() {
