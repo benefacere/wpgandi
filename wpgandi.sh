@@ -9,14 +9,20 @@ then
   exit $E_USAGE
 fi
 
-EXPECTED_ARGS=6
+EXPECTED_ARGS=3
 E_BADARGS=65
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: bash wpgandi.sh dbname dbuser dbpass adminuser adminmail adminpass"
+  echo "Usage: bash wpgandi.sh dbname  adminuser adminmail"
   exit $E_BADARGS
 fi
+
+# GENERATION DE PASSWORD DB
+passworddb=$(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 12)
+
+# GENERATION DE PASSWORD WP
+passwordwp=$(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 12)
 
 # Fonction de sortie de script :
 die() {
@@ -27,17 +33,17 @@ die() {
 # CREATION DE LA BASE
 MYSQL=`which mysql`
 
-D0="GRANT USAGE ON *.* TO $2@localhost;"
-D1="DROP USER $2@localhost;" 
+D0="GRANT USAGE ON *.* TO $1@localhost;"
+D1="DROP USER $1@localhost;" 
 D2="DROP DATABASE IF EXISTS $1;" 
 Q1="CREATE DATABASE IF NOT EXISTS $1;"
-Q2="GRANT USAGE ON *.* TO $2@localhost IDENTIFIED BY '$3';"
-Q3="GRANT ALL PRIVILEGES ON $1.* TO $2@localhost;"
+Q2="GRANT USAGE ON *.* TO $1@localhost IDENTIFIED BY '$passworddb';"
+Q3="GRANT ALL PRIVILEGES ON $1.* TO $1@localhost;"
 Q4="FLUSH PRIVILEGES;"
 SQL="${D0}${D1}${D2}${Q1}${Q2}${Q3}${Q4}"
 
 $MYSQL -uroot -p -e "$SQL"
-[ $? -eq 0 ] || die "Impossible to de créer la base et le user, mot de passe incorrect ?" ;
+[ $? -eq 0 ] || die "Impossible de créer la base et le user, mot de passe mysql incorrect ?" ;
 
 #NETTOYAGE
 rm -rf htdocs/*
@@ -69,12 +75,12 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 
 # INSTALLATION
 php wp-cli.phar core download --locale=fr_FR --force
-php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$2 --dbpass=$3 --skip-check --extra-php <<PHP
+php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass=$passworddb --skip-check --extra-php <<PHP
 define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
 PHP
 
-php wp-cli.phar core install --title="Wordpress" --admin_user=$4 --admin_email=$5 --admin_password=$6
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 # PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
@@ -114,9 +120,18 @@ php wp-cli.phar rewrite flush --hard
 php wp-cli.phar option set default_comment_status closed
 
 #CREATION DE 3 PAGES PAR DEFAUT
-php wp-cli.phar post create --post_type=page --post_status=publish --post_title='Home'
-php wp-cli.phar post create --post_type=page --post_status=publish --post_title='About'
-php wp-cli.phar post create --post_type=page --post_status=publish --post_title='Contact'
+php wp-cli.phar post create --post_type=page --post_title=Accueil --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
+php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
+echo '[contact-form-7 id="5" title="Formulaire de contact 1"]' | php wp-cli.phar post create --post_type=page --post_title=Contact --post_content --post_status=publish --post_author=$(php wp-cli.phar user get $wpuser --field=ID --format=ids)
+php wp-cli.phar option update show_on_front 'page'
+php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
+
+# CREATION MENU
+php wp-cli.phar menu create "Menu Principal"
+for pageid in $(php wp-cli.phar post list --order="ASC" --orderby="date" --post_type=page --post_status=publish --posts_per_page=-1 --field=ID --format=ids); do
+	php wp-cli.phar menu item add-post menu-principal $pageid
+done
+php wp-cli.phar menu location assign menu-principal primary
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
@@ -125,7 +140,7 @@ echo 'Disallow: /wp-admin' >> htdocs/robots.txt
 echo 'Disallow: /wp-includes' >> htdocs/robots.txt
 echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
 
-htpasswd -b -c .htpasswd $4 $6
+htpasswd -b -c .htpasswd $2 $passwordwp
 
 echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
 echo 'AuthType Basic' >> htdocs/.htaccess
@@ -144,3 +159,14 @@ echo '</limit>' >> htdocs/wp-admin/.htaccess
 # NETTOYAGE
 rm wp-cli.yml
 rm wp-cli.phar
+
+echo "================================================================="
+echo "Installation ok."
+echo ""
+echo "Username DB: $"
+echo "Password DB: $passworddb"
+echo ""
+echo "Username WP: $2"
+echo "Password WP: $passwordwp"
+echo ""
+echo "================================================================="
