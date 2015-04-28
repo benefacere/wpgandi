@@ -99,20 +99,22 @@ php wp-cli.phar plugin deactivate akismet
 php wp-cli.phar plugin uninstall akismet
 php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=ids)
 
-# NOUVEAU CHLD THEME pour TWENTY FIFTEEN
-php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
-
-# PLUGINS (RAF : ithemes security + parametrage)
+# PLUGINS (RAF : ithemes security + parametrage, redirection manuellement, activation ewww-image metadata, autoptimize, chargement W3TC par defaut)
 php wp-cli.phar plugin install wordpress-seo --activate
 php wp-cli.phar plugin install backwpup --activate
 php wp-cli.phar plugin install black-studio-tinymce-widget --activate
 php wp-cli.phar plugin install contact-form-7 --activate
 php wp-cli.phar plugin install really-simple-captcha --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
+php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install wp-optimize --activate
-php wp-cli.phar plugin install zero-spam --activate
 php wp-cli.phar plugin install wp-maintenance-mode --activate
+php wp-cli.phar plugin install disable-emojis --activate
+php wp-cli.phar plugin install wp-htaccess-editor --activate
+php wp-cli.phar plugin install varnish-http-purge --activate
 php wp-cli.phar plugin install w3-total-cache
+php wp-cli.phar plugin install autoptimize
+php wp-cli.phar plugin install zero-spam
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
@@ -121,19 +123,25 @@ php wp-cli.phar rewrite flush --hard
 # FERMETURE DES COMMENTAIRES
 php wp-cli.phar option set default_comment_status closed
 
+# PARAMETRAGE EWWW IMAGE
+php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
+
+# NOUVEAU CHLD THEME pour TWENTY FIFTEEN
+#php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
+
 #CREATION DE 3 PAGES PAR DEFAUT
-php wp-cli.phar post create --post_type=page --post_title='Accueil' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-php wp-cli.phar post create --post_type=page --post_title='Contact' --post_content='[contact-form-7 id="5" title="Formulaire de contact 1"]' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-php wp-cli.phar option update show_on_front 'page'
-php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
+#php wp-cli.phar post create --post_type=page --post_title='Accueil' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
+#php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
+#php wp-cli.phar post create --post_type=page --post_title='Contact' --post_content='[contact-form-7 id="5" title="Formulaire de contact 1"]' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
+#php wp-cli.phar option update show_on_front 'page'
+#php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
 
 # CREATION MENU
-php wp-cli.phar menu create "Menu Principal"
-for pageid in $(php wp-cli.phar post list --order="ASC" --orderby="date" --post_type=page --post_status=publish --posts_per_page=-1 --field=ID --format=ids); do
-	php wp-cli.phar menu item add-post menu-principal $pageid
-done
-php wp-cli.phar menu location assign menu-principal primary
+#php wp-cli.phar menu create "Menu Principal"
+#for pageid in $(php wp-cli.phar post list --order="ASC" --orderby="date" --post_type=page --post_status=publish --posts_per_page=-1 --field=ID --format=ids); do
+#	php wp-cli.phar menu item add-post menu-principal $pageid
+#done
+#php wp-cli.phar menu location assign menu-principal primary
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
