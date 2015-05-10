@@ -170,6 +170,9 @@ echo '</limit>' >> htdocs/wp-admin/.htaccess
 rm wp-cli.yml
 rm wp-cli.phar
 
+# SECU
+chmod 600 htdocs/wp-config.php
+
 echo "================================================================="
 echo "Installation ok."
 echo ""
