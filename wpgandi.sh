@@ -170,8 +170,9 @@ echo '</limit>' >> htdocs/wp-admin/.htaccess
 rm wp-cli.yml
 rm wp-cli.phar
 
-# SECU
-chmod 600 htdocs/wp-config.php
+# SECU : ON DEPLACE WP-CONFIG
+mv htdocs/wp-config.php ./
+chmod 600 wp-config.php
 
 echo "================================================================="
 echo "Installation ok."
