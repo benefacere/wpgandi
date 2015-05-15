@@ -112,6 +112,7 @@ php wp-cli.phar plugin install wp-maintenance-mode --activate
 php wp-cli.phar plugin install disable-emojis --activate
 php wp-cli.phar plugin install wp-htaccess-editor --activate
 php wp-cli.phar plugin install varnish-http-purge --activate
+php wp-cli.phar plugin install automatic-updater --activate
 php wp-cli.phar plugin install w3-total-cache
 php wp-cli.phar plugin install autoptimize
 php wp-cli.phar plugin install zero-spam
@@ -123,8 +124,12 @@ php wp-cli.phar rewrite flush --hard
 # FERMETURE DES COMMENTAIRES
 php wp-cli.phar option set default_comment_status closed
 
-# PARAMETRAGE EWWW IMAGE
+# PARAMETRAGE PLUGIN EWWW IMAGE
 php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
+
+# PARAMETRAGE PLUGIN AUTO UPDATE
+php wp-cli.phar option update core-minor 1
+php wp-cli.phar option update plugins 1
 
 # OPTION : NOUVEAU CHLD THEME pour TWENTY FIFTEEN
 #php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
