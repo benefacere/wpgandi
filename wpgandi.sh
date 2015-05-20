@@ -101,8 +101,7 @@ php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=i
 
 # PLUGINS (RAF : ithemes security + parametrage, redirection manuellement, activation ewww-image metadata, autoptimize, chargement W3TC par defaut)
 php wp-cli.phar plugin install wordpress-seo --activate
-# php wp-cli.phar plugin install backwpup --activate
-php wp-cli.phar plugin install updraftplus --activate
+php wp-cli.phar plugin install backwpup --activate
 php wp-cli.phar plugin install automatic-updater --activate
 php wp-cli.phar plugin install disable-emojis --activate
 php wp-cli.phar plugin install black-studio-tinymce-widget --activate
