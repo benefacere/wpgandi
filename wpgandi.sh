@@ -110,9 +110,10 @@ php wp-cli.phar plugin install really-simple-captcha --activate
 php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install wp-optimize --activate
 php wp-cli.phar plugin install wp-htaccess-editor --activate
-# php wp-cli.phar plugin install wp-maintenance-mode --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
-php wp-cli.phar plugin install varnish-http-purge --activate
+php wp-cli.phar plugin install wp-maintenance-mode
+php wp-cli.phar plugin install cookie-notice
+php wp-cli.phar plugin install varnish-http-purge
 php wp-cli.phar plugin install w3-total-cache
 php wp-cli.phar plugin install autoptimize
 php wp-cli.phar plugin install zero-spam
