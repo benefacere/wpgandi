@@ -99,7 +99,7 @@ php wp-cli.phar plugin deactivate akismet
 php wp-cli.phar plugin uninstall akismet
 php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=ids)
 
-# PLUGINS (RAF : ithemes security + parametrage, redirection manuellement, activation ewww-image metadata, autoptimize, chargement W3TC par defaut)
+# PLUGINS (RAF : ithemes security + parametrage, redirection manuellement, autoptimize, chargement W3TC par defaut)
 php wp-cli.phar plugin install wordpress-seo --activate
 php wp-cli.phar plugin install backwpup --activate
 php wp-cli.phar plugin install automatic-updater --activate
