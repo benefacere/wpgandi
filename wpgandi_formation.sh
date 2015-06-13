@@ -84,6 +84,8 @@ PHP
 
 php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
+php wp-cli.phar core language install fr_FR --activate
+
 # PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
 php wp-cli.phar option update timezone_string Europe/Paris
