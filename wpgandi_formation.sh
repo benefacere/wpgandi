@@ -75,8 +75,8 @@ echo '	- mod_rewrite' >> wp-cli.yml
 # WP-CLI
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
-# INSTALLATION
-php wp-cli.phar core download --locale=fr_FR --force
+# INSTALLATION 4.2
+php wp-cli.phar core download --version=4.2 --locale=fr_FR --force
 php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass=$passworddb --dbprefix="site_" --locale=fr_FR --extra-php <<PHP
 define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
