@@ -132,23 +132,6 @@ php wp-cli.phar option set default_comment_status closed
 # PARAMETRAGE PLUGIN EWWW IMAGE
 php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
 
-# OPTION : NOUVEAU CHLD THEME pour TWENTY FIFTEEN
-#php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
-
-# OPTION : CREATION DE 3 PAGES PAR DEFAUT
-#php wp-cli.phar post create --post_type=page --post_title='Accueil' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar post create --post_type=page --post_title='Contact' --post_content='[contact-form-7 id="5" title="Formulaire de contact 1"]' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar option update show_on_front 'page'
-#php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
-
-# OPTION : CREATION MENU
-#php wp-cli.phar menu create "Menu Principal"
-#for pageid in $(php wp-cli.phar post list --order="ASC" --orderby="date" --post_type=page --post_status=publish --posts_per_page=-1 --field=ID --format=ids); do
-#	php wp-cli.phar menu item add-post menu-principal $pageid
-#done
-#php wp-cli.phar menu location assign menu-principal primary
-
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo 'User-agent: *' > htdocs/robots.txt
 echo 'Disallow: /wp-login.php' >> htdocs/robots.txt
@@ -156,6 +139,7 @@ echo 'Disallow: /wp-admin' >> htdocs/robots.txt
 echo 'Disallow: /wp-includes' >> htdocs/robots.txt
 echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
 
+# Protection Brute Force Attack
 htpasswd -b -c .htpasswd $2 $passwordwp
 
 echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
@@ -175,10 +159,6 @@ echo '</limit>' >> htdocs/wp-admin/.htaccess
 # NETTOYAGE
 rm wp-cli.yml
 rm wp-cli.phar
-
-# SECU : ON DEPLACE WP-CONFIG
-# mv htdocs/wp-config.php ./
-# chmod 600 wp-config.php
 
 echo "================================================================="
 echo "Installation ok."
