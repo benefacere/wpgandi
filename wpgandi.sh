@@ -89,11 +89,13 @@ php wp-cli.phar core language install fr_FR --activate
 # PARAMETRAGE GENERAL
 php wp-cli.phar option update blog_public 0
 php wp-cli.phar option update timezone_string Europe/Paris
+php wp-cli.phar option update date_format 'j F Y'
+php wp-cli.phar option update time_format 'G \h i \m\i\n'
 
 # NETTOYAGE
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
-php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="page-d-exemple" --field=ID --format=ids)
+php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="sample-page" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
 php wp-cli.phar plugin uninstall hello
