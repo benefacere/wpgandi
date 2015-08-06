@@ -154,10 +154,19 @@ php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
 #php wp-cli.phar menu location assign menu-principal primary
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
-echo 'User-agent: *' > htdocs/robots.txt
-echo 'Disallow: /wp-login.php' >> htdocs/robots.txt
-echo 'Disallow: /wp-admin' >> htdocs/robots.txt
-echo 'Disallow: /wp-includes' >> htdocs/robots.txt
+echo '# Googlebot' > htdocs/robots.txt
+echo 'User-agent: Googlebot' >> htdocs/robots.txt
+echo 'Allow: *.css*' >> htdocs/robots.txt
+echo 'Allow: *.js*' >> htdocs/robots.txt
+echo '# Global' >> htdocs/robots.txt
+echo 'User-agent: *' >> htdocs/robots.txt
+echo 'Disallow: /wp-admin/' >> htdocs/robots.txt
+echo 'Disallow: /wp-includes/' >> htdocs/robots.txt
+echo 'Allow: /wp-includes/js/' >> htdocs/robots.txt
+echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
+echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
+echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
+echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
 echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
 
 htpasswd -b -c .htpasswd $2 $passwordwp
