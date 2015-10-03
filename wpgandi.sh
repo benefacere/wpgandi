@@ -181,9 +181,7 @@ echo '</FilesMatch>' >> htdocs/.htaccess
 echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' > htdocs/wp-admin/.htaccess
 echo 'AuthName "Secure Area"' >> htdocs/wp-admin/.htaccess
 echo 'AuthType Basic' >> htdocs/wp-admin/.htaccess
-echo '<limit GET POST>' >> htdocs/wp-admin/.htaccess
 echo 'require valid-user' >> htdocs/wp-admin/.htaccess
-echo '</limit>' >> htdocs/wp-admin/.htaccess
 
 # NETTOYAGE
 rm wp-cli.yml
