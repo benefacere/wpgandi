@@ -80,6 +80,7 @@ php wp-cli.phar core download --force
 php wp-cli.phar core config --dbhost=localhost --dbname=$1 --dbuser=$1 --dbpass=$passworddb --dbprefix="site_" --locale=fr_FR --extra-php <<PHP
 define('WP_HOME','http://$SITEURL');
 define('WP_SITEURL','http://$SITEURL');
+define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
 php wp-cli.phar core install --title="Un site utilisant Wordpress" --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
