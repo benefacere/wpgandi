@@ -112,8 +112,8 @@ mv updraftplus ./htdocs/wp-content/plugins/
 php wp-cli.phar plugin activate updraftplus
 
 # PLUGINS
-php wp-cli.phar plugin install mainwp-child --activate
-php wp-cli.phar plugin install mainwp-child-reports --activate
+php wp-cli.phar plugin install mainwp-child
+php wp-cli.phar plugin install mainwp-child-reports
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
