@@ -172,6 +172,7 @@ echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
 
 htpasswd -b -c .htpasswd $2 $passwordwp
 
+echo '' >> htdocs/.htaccess
 echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
 echo 'AuthType Basic' >> htdocs/.htaccess
 echo 'AuthName "Secure Area"' >> htdocs/.htaccess
