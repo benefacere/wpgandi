@@ -96,6 +96,7 @@ php wp-cli.phar option update time_format 'G \h i \m\i\n'
 # NETTOYAGE
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
+php wp-cli.phar theme delete twentyfifteen
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="sample-page" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
@@ -110,22 +111,25 @@ php wp-cli.phar plugin install wordpress-seo --activate
 php wp-cli.phar plugin install disable-emojis --activate
 php wp-cli.phar plugin install black-studio-tinymce-widget --activate
 php wp-cli.phar plugin install contact-form-7 --activate
-php wp-cli.phar plugin install really-simple-captcha --activate
 php wp-cli.phar plugin install cookie-notice
-php wp-cli.phar plugin install zero-spam
 
-php wp-cli.phar plugin install backwpup --activate
-php wp-cli.phar plugin install automatic-updater --activate
 php wp-cli.phar plugin install wp-optimize --activate
 php wp-cli.phar plugin install ricg-responsive-images --activate
-php wp-cli.phar plugin install wp-htaccess-editor --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
-php wp-cli.phar plugin install wp-maintenance-mode --activate
 
-php wp-cli.phar plugin install varnish-http-purge
+php wp-cli.phar plugin install varnish-http-purge --activate
 php wp-cli.phar plugin install w3-total-cache
-php wp-cli.phar plugin install autoptimize
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
+
+php wp-cli.phar plugin install mainwp-child
+php wp-cli.phar plugin install mainwp-child-reports
+
+# updraftplus
+curl -O https://updraftplus.com/wp-content/updraftplus.zip
+unzip updraftplus.zip
+rm updraftplus.zip
+mv updraftplus ./htdocs/wp-content/plugins/
+php wp-cli.phar plugin activate updraftplus
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
@@ -136,23 +140,6 @@ php wp-cli.phar option set default_comment_status closed
 
 # PARAMETRAGE PLUGIN EWWW IMAGE
 php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
-
-# OPTION : NOUVEAU CHLD THEME pour TWENTY FIFTEEN
-#php wp-cli.phar scaffold child-theme twentyfifteen-child --parent_theme=twentyfifteen --activate
-
-# OPTION : CREATION DE 3 PAGES PAR DEFAUT
-#php wp-cli.phar post create --post_type=page --post_title='Accueil' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar post create --post_type=page --post_title='A propos' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar post create --post_type=page --post_title='Contact' --post_content='[contact-form-7 id="5" title="Formulaire de contact 1"]' --post_status=publish --post_author=$(php wp-cli.phar user get $2 --field=ID --format=ids)
-#php wp-cli.phar option update show_on_front 'page'
-#php wp-cli.phar option update page_on_front $(php wp-cli.phar post list --post_type=page --post_status=publish --posts_per_page=1 --pagename=accueil --field=ID --format=ids)
-
-# OPTION : CREATION MENU
-#php wp-cli.phar menu create "Menu Principal"
-#for pageid in $(php wp-cli.phar post list --order="ASC" --orderby="date" --post_type=page --post_status=publish --posts_per_page=-1 --field=ID --format=ids); do
-#	php wp-cli.phar menu item add-post menu-principal $pageid
-#done
-#php wp-cli.phar menu location assign menu-principal primary
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
 echo '# Googlebot' > htdocs/robots.txt
@@ -168,22 +155,6 @@ echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
 echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
 echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
 echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
-echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
-
-htpasswd -b -c .htpasswd $2 $passwordwp
-
-echo '' >> htdocs/.htaccess
-echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
-echo 'AuthType Basic' >> htdocs/.htaccess
-echo 'AuthName "Secure Area"' >> htdocs/.htaccess
-echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' >> htdocs/.htaccess
-echo 'require valid-user' >> htdocs/.htaccess
-echo '</FilesMatch>' >> htdocs/.htaccess
-
-echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' > htdocs/wp-admin/.htaccess
-echo 'AuthName "Secure Area"' >> htdocs/wp-admin/.htaccess
-echo 'AuthType Basic' >> htdocs/wp-admin/.htaccess
-echo 'require valid-user' >> htdocs/wp-admin/.htaccess
 
 # NETTOYAGE
 rm wp-cli.yml
