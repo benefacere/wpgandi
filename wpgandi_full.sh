@@ -164,6 +164,9 @@ rm wp-cli.phar
 # mv htdocs/wp-config.php ./
 # chmod 600 wp-config.php
 
+find ./htdocs/ -type d -exec chmod 755 {} \;
+find ./htdocs/ -type f -exec chmod 644 {} \;
+
 echo "================================================================="
 echo "Installation ok."
 echo ""
