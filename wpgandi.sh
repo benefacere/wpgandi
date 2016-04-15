@@ -116,7 +116,7 @@ php wp-cli.phar plugin install zero-spam
 
 php wp-cli.phar plugin install backwpup --activate
 php wp-cli.phar plugin install automatic-updater --activate
-php wp-cli.phar plugin install wp-optimize --activate
+php wp-cli.phar plugin install wp-sweep --activate
 php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install wp-htaccess-editor --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
