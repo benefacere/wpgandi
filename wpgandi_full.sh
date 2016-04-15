@@ -113,7 +113,7 @@ php wp-cli.phar plugin install black-studio-tinymce-widget --activate
 php wp-cli.phar plugin install contact-form-7 --activate
 php wp-cli.phar plugin install cookie-notice
 
-php wp-cli.phar plugin install wp-optimize --activate
+php wp-cli.phar plugin install wp-sweep --activate
 php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
 
