@@ -175,6 +175,26 @@ echo 'AuthName "Secure Area"' >> htdocs/.htaccess
 echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' >> htdocs/.htaccess
 echo 'require valid-user' >> htdocs/.htaccess
 echo '</FilesMatch>' >> htdocs/.htaccess
+echo '' >> htdocs/.htaccess
+echo 'Header unset Pragma' >> htdocs/.htaccess
+echo 'FileETag None' >> htdocs/.htaccess
+echo 'Header unset ETag' >> htdocs/.htaccess
+echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
+echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
+echo 'ExpiresActive On' >> htdocs/.htaccess
+echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
+echo '</IfModule>' >> htdocs/.htaccess
+echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
 
 echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' > htdocs/wp-admin/.htaccess
 echo 'AuthName "Secure Area"' >> htdocs/wp-admin/.htaccess
