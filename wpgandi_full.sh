@@ -118,7 +118,7 @@ php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
 
 php wp-cli.phar plugin install varnish-http-purge --activate
-php wp-cli.phar plugin install w3-total-cache
+php wp-cli.phar plugin install wp-super-cache --activate
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
 
 php wp-cli.phar plugin install mainwp-child
