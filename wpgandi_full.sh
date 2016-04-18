@@ -119,6 +119,7 @@ php wp-cli.phar plugin install ewww-image-optimizer --activate
 
 php wp-cli.phar plugin install varnish-http-purge --activate
 php wp-cli.phar plugin install wp-super-cache --activate
+php wp-cli.phar plugin install autoptimize
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
 
 php wp-cli.phar plugin install mainwp-child
@@ -155,6 +156,27 @@ echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
 echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
 echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
 echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
+
+echo '' >> htdocs/.htaccess
+echo 'Header unset Pragma' >> htdocs/.htaccess
+echo 'FileETag None' >> htdocs/.htaccess
+echo 'Header unset ETag' >> htdocs/.htaccess
+echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
+echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
+echo 'ExpiresActive On' >> htdocs/.htaccess
+echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
+echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
+echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
+echo '</IfModule>' >> htdocs/.htaccess
+echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
 
 # NETTOYAGE
 rm wp-cli.yml
