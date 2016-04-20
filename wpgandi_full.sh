@@ -114,13 +114,14 @@ php wp-cli.phar plugin install contact-form-7 --activate
 php wp-cli.phar plugin install cookie-notice
 
 php wp-cli.phar plugin install wp-sweep --activate
+php wp-cli.phar plugin install ga-google-analytics --activate
 php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
 
 php wp-cli.phar plugin install varnish-http-purge --activate
 php wp-cli.phar plugin install wp-super-cache --activate
-php wp-cli.phar plugin install autoptimize
-php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
+php wp-cli.phar plugin install autoptimize --activate
+php wp-cli.phar plugin install all-in-one-wp-security-and-firewall --activate
 
 php wp-cli.phar plugin install mainwp-child
 php wp-cli.phar plugin install mainwp-child-reports
