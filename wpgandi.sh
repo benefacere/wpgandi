@@ -110,17 +110,14 @@ php wp-cli.phar plugin install wordpress-seo --activate
 php wp-cli.phar plugin install disable-emojis --activate
 php wp-cli.phar plugin install black-studio-tinymce-widget --activate
 php wp-cli.phar plugin install contact-form-7 --activate
-php wp-cli.phar plugin install cookie-notice
 
 php wp-cli.phar plugin install backwpup --activate
 php wp-cli.phar plugin install automatic-updater --activate
 php wp-cli.phar plugin install wp-sweep --activate
-php wp-cli.phar plugin install ricg-responsive-images --activate
 php wp-cli.phar plugin install ewww-image-optimizer --activate
 
 php wp-cli.phar plugin install varnish-http-purge
 php wp-cli.phar plugin install wp-super-cache --activate
-php wp-cli.phar plugin install autoptimize
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
