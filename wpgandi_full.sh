@@ -70,7 +70,7 @@ echo 'path:htdocs' > wp-cli.yml
 echo 'debug:true' >> wp-cli.yml
 echo 'url:http://'$SITEURL >> wp-cli.yml
 echo 'apache_modules:' >> wp-cli.yml
-echo '	- mod_rewrite' >> wp-cli.yml
+#echo '	- mod_rewrite' >> wp-cli.yml
 
 # WP-CLI
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -105,19 +105,19 @@ php wp-cli.phar plugin deactivate akismet
 php wp-cli.phar plugin uninstall akismet
 php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=ids)
 
-# PLUGINS (RAF : redirection manuellement)
+# PLUGINS
 php wp-cli.phar plugin install wordpress-seo --activate
 
 php wp-cli.phar plugin install disable-emojis --activate
 php wp-cli.phar plugin install black-studio-tinymce-widget --activate
-php wp-cli.phar plugin install contact-form-7 --activate
+# php wp-cli.phar plugin install contact-form-7 --activate
 
 php wp-cli.phar plugin install wp-sweep --activate
 php wp-cli.phar plugin install ga-google-analytics --activate
 php wp-cli.phar plugin install ewww-image-optimizer
 
 php wp-cli.phar plugin install varnish-http-purge --activate
-php wp-cli.phar plugin install wp-super-cache
+# php wp-cli.phar plugin install wp-super-cache
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
 
 php wp-cli.phar plugin install mainwp-child
@@ -140,7 +140,7 @@ php wp-cli.phar option set default_comment_status closed
 # PARAMETRAGE PLUGIN EWWW IMAGE
 php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
 
-# robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
+# robots.txt 
 echo '# Googlebot' > htdocs/robots.txt
 echo 'User-agent: Googlebot' >> htdocs/robots.txt
 echo 'Allow: *.css*' >> htdocs/robots.txt
@@ -155,26 +155,27 @@ echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
 echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
 echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
 
-echo '' >> htdocs/.htaccess
-echo 'Header unset Pragma' >> htdocs/.htaccess
-echo 'FileETag None' >> htdocs/.htaccess
-echo 'Header unset ETag' >> htdocs/.htaccess
-echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
-echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
-echo 'ExpiresActive On' >> htdocs/.htaccess
-echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
-echo '</IfModule>' >> htdocs/.htaccess
-echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
+# .htaccess 
+# echo '' >> htdocs/.htaccess
+# echo 'Header unset Pragma' >> htdocs/.htaccess
+# echo 'FileETag None' >> htdocs/.htaccess
+# echo 'Header unset ETag' >> htdocs/.htaccess
+# echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
+# echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
+# echo 'ExpiresActive On' >> htdocs/.htaccess
+# echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
+# echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
+# echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
+# echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
+# echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
+# echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
+# echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
+# echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
+# echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
+# echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
+# echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
+# echo '</IfModule>' >> htdocs/.htaccess
+# echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
 
 # NETTOYAGE
 rm wp-cli.yml
