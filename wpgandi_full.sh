@@ -66,6 +66,7 @@ else
 fi
 
 # WP-CLI
+cd htdocs
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 # INSTALLATION
@@ -76,7 +77,7 @@ define('WP_SITEURL','http://$SITEURL');
 define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --path="htdocs" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 php wp-cli.phar core language install fr_FR --activate
 
@@ -120,7 +121,7 @@ php wp-cli.phar plugin install mainwp-child-reports
 curl -O https://updraftplus.com/wp-content/updraftplus.zip
 unzip updraftplus.zip
 rm updraftplus.zip
-mv updraftplus ./htdocs/wp-content/plugins/
+mv updraftplus ./wp-content/plugins/
 php wp-cli.phar plugin activate updraftplus
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
@@ -134,45 +135,24 @@ php wp-cli.phar option set default_comment_status closed
 php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
 
 # robots.txt 
-echo '# Googlebot' > htdocs/robots.txt
-echo 'User-agent: Googlebot' >> htdocs/robots.txt
-echo 'Allow: *.css*' >> htdocs/robots.txt
-echo 'Allow: *.js*' >> htdocs/robots.txt
-echo '# Global' >> htdocs/robots.txt
-echo 'User-agent: *' >> htdocs/robots.txt
-echo 'Disallow: /wp-admin/' >> htdocs/robots.txt
-echo 'Disallow: /wp-includes/' >> htdocs/robots.txt
-echo 'Allow: /wp-includes/js/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
-echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
-
-# .htaccess 
-# echo '' >> htdocs/.htaccess
-# echo 'Header unset Pragma' >> htdocs/.htaccess
-# echo 'FileETag None' >> htdocs/.htaccess
-# echo 'Header unset ETag' >> htdocs/.htaccess
-# echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
-# echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
-# echo 'ExpiresActive On' >> htdocs/.htaccess
-# echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
-# echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
-# echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
-# echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
-# echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
-# echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
-# echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
-# echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
-# echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
-# echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
-# echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
-# echo '</IfModule>' >> htdocs/.htaccess
-# echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
+echo '# Googlebot' > robots.txt
+echo 'User-agent: Googlebot' >> robots.txt
+echo 'Allow: *.css*' >> robots.txt
+echo 'Allow: *.js*' >> robots.txt
+echo '# Global' >> robots.txt
+echo 'User-agent: *' >> robots.txt
+echo 'Disallow: /wp-admin/' >> robots.txt
+echo 'Disallow: /wp-includes/' >> robots.txt
+echo 'Allow: /wp-includes/js/' >> robots.txt
+echo 'Allow: /wp-content/plugins/' >> robots.txt
+echo 'Allow: /wp-content/themes/' >> robots.txt
+echo 'Allow: /wp-content/cache/' >> robots.txt
+echo 'Disallow: /xmlrpc.php' >> robots.txt
 
 # NETTOYAGE
-rm wp-cli.yml
 rm wp-cli.phar
+
+cd ..
 
 # SECU : ON DEPLACE WP-CONFIG
 # mv htdocs/wp-config.php ./
