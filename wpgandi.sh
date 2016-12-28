@@ -66,6 +66,7 @@ else
 fi
 
 # WP-CLI
+cd htdocs
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 # INSTALLATION
@@ -76,7 +77,7 @@ define('WP_SITEURL','http://$SITEURL');
 define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --path=htdocs --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 php wp-cli.phar core language install fr_FR --activate
 
@@ -89,6 +90,8 @@ php wp-cli.phar option update time_format 'G \h i \m\i\n'
 # NETTOYAGE
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
+php wp-cli.phar theme delete twentyfifteen
+php wp-cli.phar theme delete twentysixteen
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="sample-page" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
@@ -141,64 +144,30 @@ php wp-cli.phar option update ewww_image_optimizer_jpegtran_copy 1
 #php wp-cli.phar menu location assign menu-principal primary
 
 # robots.txt et .htaccess (avec creation htpasswd pour protection Brute Force Attack)
-echo '# Googlebot' > htdocs/robots.txt
-echo 'User-agent: Googlebot' >> htdocs/robots.txt
-echo 'Allow: *.css*' >> htdocs/robots.txt
-echo 'Allow: *.js*' >> htdocs/robots.txt
-echo '# Global' >> htdocs/robots.txt
-echo 'User-agent: *' >> htdocs/robots.txt
-echo 'Disallow: /wp-admin/' >> htdocs/robots.txt
-echo 'Disallow: /wp-includes/' >> htdocs/robots.txt
-echo 'Allow: /wp-includes/js/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
-echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
-echo 'Sitemap: http://'$SITEURL'/sitemap_index.xml' >> htdocs/robots.txt
+echo '# Googlebot' > robots.txt
+echo 'User-agent: Googlebot' >> robots.txt
+echo 'Allow: *.css*' >> robots.txt
+echo 'Allow: *.js*' >> robots.txt
+echo '# Global' >> robots.txt
+echo 'User-agent: *' >> robots.txt
+echo 'Disallow: /wp-admin/' >> robots.txt
+echo 'Disallow: /wp-includes/' >> robots.txt
+echo 'Allow: /wp-includes/js/' >> robots.txt
+echo 'Allow: /wp-content/plugins/' >> robots.txt
+echo 'Allow: /wp-content/themes/' >> robots.txt
+echo 'Allow: /wp-content/cache/' >> robots.txt
+echo 'Disallow: /xmlrpc.php' >> robots.txt
 
 htpasswd -b -c .htpasswd $2 $passwordwp
 
-echo '' >> htdocs/.htaccess
-echo '<FilesMatch "wp-login.php">' >> htdocs/.htaccess
-echo 'AuthType Basic' >> htdocs/.htaccess
-echo 'AuthName "Secure Area"' >> htdocs/.htaccess
-echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' >> htdocs/.htaccess
-echo 'require valid-user' >> htdocs/.htaccess
-echo '</FilesMatch>' >> htdocs/.htaccess
-echo '' >> htdocs/.htaccess
-echo 'Header unset Pragma' >> htdocs/.htaccess
-echo 'FileETag None' >> htdocs/.htaccess
-echo 'Header unset ETag' >> htdocs/.htaccess
-echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
-echo '<IfModule mod_expires.c>' >> htdocs/.htaccess
-echo 'ExpiresActive On' >> htdocs/.htaccess
-echo 'ExpiresByType image/jpg "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/jpeg "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/gif "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType image/png "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresByType text/css "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType text/html "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType application/pdf "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType text/x-javascript "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType application/x-shockwave-flash "access 1 month"' >> htdocs/.htaccess
-echo 'ExpiresByType image/x-icon "access 1 year"' >> htdocs/.htaccess
-echo 'ExpiresDefault "access 1 month"' >> htdocs/.htaccess
-echo '</IfModule>' >> htdocs/.htaccess
-echo '## EXPIRES CACHING ##' >> htdocs/.htaccess
-
-echo 'AuthUserFile /srv/data/web/vhosts/'$SITEURL'/.htpasswd' > htdocs/wp-admin/.htaccess
-echo 'AuthName "Secure Area"' >> htdocs/wp-admin/.htaccess
-echo 'AuthType Basic' >> htdocs/wp-admin/.htaccess
-echo 'require valid-user' >> htdocs/wp-admin/.htaccess
-
 # NETTOYAGE
-rm wp-cli.yml
 rm wp-cli.phar
 
 # SECU : ON DEPLACE WP-CONFIG
 # mv htdocs/wp-config.php ./
 # chmod 600 wp-config.php
 
+cd ..
 find ./htdocs/ -type d -exec chmod 755 {} \;
 find ./htdocs/ -type f -exec chmod 644 {} \;
 
