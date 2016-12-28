@@ -76,7 +76,7 @@ define('WP_SITEURL','http://$SITEURL');
 define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --path=htdocs --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --path="htdocs" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 php wp-cli.phar core language install fr_FR --activate
 
