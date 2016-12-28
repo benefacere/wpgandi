@@ -66,6 +66,7 @@ else
 fi
 
 # WP-CLI
+cd htdocs
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 # INSTALLATION
@@ -76,7 +77,7 @@ define('WP_SITEURL','http://$SITEURL');
 define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --path=htdocs --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 php wp-cli.phar core language install fr_FR --activate
 
@@ -89,6 +90,8 @@ php wp-cli.phar option update time_format 'G \h i \m\i\n'
 # NETTOYAGE
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
+php wp-cli.phar theme delete twentyfifteen
+php wp-cli.phar theme delete twentysixteen
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="sample-page" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
@@ -101,7 +104,7 @@ php wp-cli.phar widget delete $(php wp-cli.phar widget list sidebar-1 --format=i
 curl -O https://updraftplus.com/wp-content/updraftplus.zip
 unzip updraftplus.zip
 rm updraftplus.zip
-mv updraftplus ./htdocs/wp-content/plugins/
+mv updraftplus ./wp-content/plugins/
 php wp-cli.phar plugin activate updraftplus
 
 # PLUGINS
@@ -116,28 +119,28 @@ php wp-cli.phar rewrite flush --hard
 php wp-cli.phar option set default_comment_status closed
 
 # robots.txt
-echo '# Googlebot' > htdocs/robots.txt
-echo 'User-agent: Googlebot' >> htdocs/robots.txt
-echo 'Allow: *.css*' >> htdocs/robots.txt
-echo 'Allow: *.js*' >> htdocs/robots.txt
-echo '# Global' >> htdocs/robots.txt
-echo 'User-agent: *' >> htdocs/robots.txt
-echo 'Disallow: /wp-admin/' >> htdocs/robots.txt
-echo 'Disallow: /wp-includes/' >> htdocs/robots.txt
-echo 'Allow: /wp-includes/js/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/plugins/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/themes/' >> htdocs/robots.txt
-echo 'Allow: /wp-content/cache/' >> htdocs/robots.txt
-echo 'Disallow: /xmlrpc.php' >> htdocs/robots.txt
+echo '# Googlebot' > robots.txt
+echo 'User-agent: Googlebot' >> robots.txt
+echo 'Allow: *.css*' >> robots.txt
+echo 'Allow: *.js*' >> robots.txt
+echo '# Global' >> robots.txt
+echo 'User-agent: *' >> robots.txt
+echo 'Disallow: /wp-admin/' >> robots.txt
+echo 'Disallow: /wp-includes/' >> robots.txt
+echo 'Allow: /wp-includes/js/' >> robots.txt
+echo 'Allow: /wp-content/plugins/' >> robots.txt
+echo 'Allow: /wp-content/themes/' >> robots.txt
+echo 'Allow: /wp-content/cache/' >> robots.txt
+echo 'Disallow: /xmlrpc.php' >> robots.txt
 
 # NETTOYAGE
-rm wp-cli.yml
 rm wp-cli.phar
 
 # SECU : ON DEPLACE WP-CONFIG
 # mv htdocs/wp-config.php ./
 # chmod 600 wp-config.php
 
+cd ..
 find ./htdocs/ -type d -exec chmod 755 {} \;
 find ./htdocs/ -type f -exec chmod 644 {} \;
 
