@@ -91,6 +91,7 @@ php wp-cli.phar option update time_format 'G \h i \m\i\n'
 php wp-cli.phar theme delete twentythirteen
 php wp-cli.phar theme delete twentyfourteen
 php wp-cli.phar theme delete twentyfifteen
+php wp-cli.phar theme delete twentysixteen
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=page --posts_per_page=1 --post_status=publish --pagename="sample-page" --field=ID --format=ids)
 php wp-cli.phar post delete $(php wp-cli.phar post list --post_type=post --posts_per_page=1 --post_status=publish --postname="bonjour-tout-le-monde" --field=ID --format=ids)
 php wp-cli.phar plugin deactivate hello
