@@ -65,13 +65,6 @@ else
 	echo "Pas de htpasswd a supprimer"
 fi
 
-# FICHIER CONF WP-CLI
-echo 'path:htdocs' > wp-cli.yml
-echo 'debug:true' >> wp-cli.yml
-echo 'url:http://'$SITEURL >> wp-cli.yml
-echo 'apache_modules:' >> wp-cli.yml
-#echo '	- mod_rewrite' >> wp-cli.yml
-
 # WP-CLI
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
@@ -83,7 +76,7 @@ define('WP_SITEURL','http://$SITEURL');
 define( 'WP_MEMORY_LIMIT', '64M' );
 PHP
 
-php wp-cli.phar core install --title="Un site utilisant Wordpress" --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
+php wp-cli.phar core install --title="Un site utilisant Wordpress" --path=htdocs --url=$SITEURL --admin_user=$2 --admin_email=$3 --admin_password=$passwordwp
 
 php wp-cli.phar core language install fr_FR --activate
 
