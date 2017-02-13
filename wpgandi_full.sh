@@ -114,6 +114,7 @@ php wp-cli.phar plugin install ewww-image-optimizer
 php wp-cli.phar plugin install varnish-http-purge --activate
 # php wp-cli.phar plugin install wp-super-cache
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
+php wp-cli.phar plugin install disable-json-api --activate
 
 php wp-cli.phar plugin install mainwp-child
 php wp-cli.phar plugin install mainwp-child-reports
