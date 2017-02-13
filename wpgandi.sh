@@ -115,6 +115,7 @@ php wp-cli.phar plugin install ewww-image-optimizer --activate
 php wp-cli.phar plugin install varnish-http-purge
 php wp-cli.phar plugin install wp-super-cache --activate
 php wp-cli.phar plugin install all-in-one-wp-security-and-firewall
+php wp-cli.phar plugin install disable-json-api --activate
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
