@@ -110,6 +110,7 @@ php wp-cli.phar plugin activate updraftplus
 # PLUGINS
 php wp-cli.phar plugin install mainwp-child
 php wp-cli.phar plugin install mainwp-child-reports
+php wp-cli.phar plugin install disable-json-api --activate
 
 # PARAMETRAGE PERMALIENS (avec modif du .htaccess)
 php wp-cli.phar rewrite structure "/%postname%/" --hard
